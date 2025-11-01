@@ -1,4 +1,6 @@
 public class Aluno {
+    public String Genero;
+    public String getGenero;
     private String nome;
     private String email;
     private String curso;

@@ -1,18 +1,16 @@
-import org.xml.sax.HandlerBase;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class JanelaPrincipal extends JFrame {
-    private JTextField campoNome,campoEmail,campoRua,campoCidade;
-    private JComboBox<String>comboCurso;
-    private JCheckBox checkEmail,checkNotificacao;
-    private JRadioButton radioMasc,radioFem;
-    private JButton btnCadastrar,btnLimpar,btnSair;
+    private JTextField campoNome, campoEmail, campoRua, campoCidade;
+    private JComboBox<String> comboCurso;
+    private JCheckBox checkEmail, checkNotificacao;
+    private JRadioButton radioMasc, radioFem;
+    private JButton btnCadastrar, btnLimpar, btnSair;
 
-    public JanelaPrincipal(){
+    public JanelaPrincipal() {
         setTitle("Sistema de cadastro de alunos");
-        setSize(500,400);
+        setSize(500, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -25,7 +23,7 @@ public class JanelaPrincipal extends JFrame {
 
         JMenu menuAjuda = new JMenu("Ajuda");
         JMenuItem itemSobre = new JMenuItem("Sobre");
-        itemSobre.addActionListener(e->JOptionPane.showMessageDialog(this,"Sistema De Cadastro De Alunos/nVersão 1.0"));
+        itemSobre.addActionListener(e -> JOptionPane.showMessageDialog(this, "Sistema De Cadastro De Alunos\nVersão 1.0"));
         menuAjuda.add(itemSobre);
 
         barra.add(menuArquivo);
@@ -36,14 +34,17 @@ public class JanelaPrincipal extends JFrame {
         JTabbedPane abas = new JTabbedPane();
 
         //painel de dados pessoais
-
-        JPanel painelDados = new JPanel(new GridLayout(6,2));
+        JPanel painelDados = new JPanel(new GridLayout(6, 2));
         painelDados.add(new JLabel("Nome: "));
         campoNome = new JTextField(20);
+        painelDados.add(campoNome);
+
+        painelDados.add(new JLabel("Email: "));
+        campoEmail = new JTextField(20);
         painelDados.add(campoEmail);
 
         painelDados.add(new JLabel("Curso"));
-        String []cursos = {"Java","Python","C#","JavaScript"};
+        String[] cursos = {"Java", "Python", "C#", "JavaScript"};
         comboCurso = new JComboBox<>(cursos);
         painelDados.add(comboCurso);
 
@@ -64,11 +65,73 @@ public class JanelaPrincipal extends JFrame {
         painelDados.add(checkEmail);
         painelDados.add(checkNotificacao);
 
+        abas.add("Dados Pessoais", painelDados);
 
-        abas.add("Endereço",pai)
+        JPanel painelEndereco = new JPanel(new GridLayout(2, 2));
+        painelEndereco.add(new JLabel("Rua"));
+        campoRua = new JTextField(20);
+        painelEndereco.add(campoRua);
 
+        painelEndereco.add(new JLabel("Cidade"));
+        campoCidade = new JTextField(20);
+        painelEndereco.add(campoCidade);
 
+        abas.add("Endereço", painelEndereco);
+
+        JPanel painelBotoes = new JPanel();
+        btnCadastrar = new JButton("Cadastrar");
+        btnLimpar = new JButton("Limpar");
+        btnSair = new JButton("Sair");
+
+        painelBotoes.add(btnCadastrar);
+        painelBotoes.add(btnLimpar);
+        painelBotoes.add(btnSair);
+
+        btnCadastrar.addActionListener(e -> cadastrarAluno());
+        btnLimpar.addActionListener(e -> limparCampos());
+        btnSair.addActionListener(e -> System.exit(0));
+
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(abas, BorderLayout.CENTER);
+        getContentPane().add(painelBotoes, BorderLayout.SOUTH);
+
+        setVisible(true);
     }
 
+    private void cadastrarAluno() {
+        Aluno aluno = new Aluno();
+        aluno.setNome(campoNome.getText());
+        aluno.setEmail(campoEmail.getText());
+        aluno.setCurso((String) comboCurso.getSelectedItem());
+        aluno.setGenero(radioMasc.isSelected() ? "Masculino" : "Feminino");
+        aluno.setReceberEmail(checkEmail.isSelected());
+        aluno.setReceberNotificacao(checkNotificacao.isSelected());
+        aluno.setRua(campoRua.getText());
+        aluno.setCidade(campoCidade.getText());
 
+        JOptionPane.showMessageDialog(this,
+                "Aluno cadastrado com sucesso:\n" +
+                        "Nome: " + aluno.getNome() + "\n" +
+                        "Email: " + aluno.getEmail() + "\n" +
+                        "Curso: " + aluno.getCurso() + "\n" +
+                        "Genero: " + aluno.getGenero() + "\n" +
+                        "Rua: " + aluno.getRua() + "\n" +
+                        "Cidade: " + aluno.getCidade());
+    }
+
+    private void limparCampos() {
+        campoNome.setText("");
+        campoEmail.setText("");
+        comboCurso.setSelectedIndex(0);
+        radioMasc.setSelected(false);
+        radioFem.setSelected(false);
+        checkEmail.setSelected(false);
+        checkNotificacao.setSelected(false);
+        campoRua.setText("");
+        campoCidade.setText("");
+    }
+
+    public static void main(String[] args) {
+        new JanelaPrincipal();
+    }
 }
