@@ -109,14 +109,11 @@ public class JanelaPrincipal extends JFrame {
         aluno.setRua(campoRua.getText());
         aluno.setCidade(campoCidade.getText());
 
+        AlunoDAO dao = new AlunoDAO();
+        dao.salvar(aluno);
+
         JOptionPane.showMessageDialog(this,
-                "Aluno cadastrado com sucesso:\n" +
-                        "Nome: " + aluno.getNome() + "\n" +
-                        "Email: " + aluno.getEmail() + "\n" +
-                        "Curso: " + aluno.getCurso() + "\n" +
-                        "Genero: " + aluno.getGenero() + "\n" +
-                        "Rua: " + aluno.getRua() + "\n" +
-                        "Cidade: " + aluno.getCidade());
+                "Aluno Cadastrado com sucesso no banco de dados!");
     }
 
     private void limparCampos() {
